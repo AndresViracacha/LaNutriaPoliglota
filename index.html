@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		La nutria
+	</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<input type="text" id="codigo" class="codigo">
+
+	<!------------------------------------------------------------------------------------- ui -->
+	<div class="vidas" id="vidas">
+		<img id="vidas1" src="./Sprites/UI/corazon.png" alt="">
+		<img id="vidas2" src="./Sprites/UI/corazon.png" alt="">
+		<img id="vidas3" src="./Sprites/UI/corazon.png" alt="">
+		<img id="vidas4" src="./Sprites/UI/corazon.png" alt="">
+		<img id="vidas5" src="./Sprites/UI/corazon.png" alt="">
+	</div>
+	<div class="tiempo" id="tiempoo">
+		<img src="./Sprites/UI/timer.png" alt="">
+		<p id="tiempo">00:20</p>
+	</div>
+	<div class="objetos" id="objetos">
+		<img class="camara" id="camara" src="./Sprites/UI/camaraN.png" alt="">
+		<img class="binoculares" id="binoculares" src="./Sprites/UI/binocularesN.png" alt="">
+		<img class="gorra" id="gorra" src="./Sprites/UI/gorraN.png" alt="">
+		<img class="mapa" id="mapa" src="./Sprites/UI/mapaN.png" alt="">
+		<img class="termo" id="termo" src="././Sprites/UI/termoN.png" alt="">
+	</div>
+
+	<!-- alerta -->
+	<div class="alerta" id="alerta">
+
+		<p class="tituloAlerta" id="tituloAlerta">
+			Has Perdido
+		</p>
+
+		<div class="mensajeAlerta">
+			<p class="mensajeAlerta" id="mensajeAlerta">
+				¡Oh no!, el huron ha conseguido escaparse con los papeles de los turistas. ¡Pero no te preocupes! puedes
+				volverlo a intentar
+			</p>
+		</div>
+
+	</div>
+	<!------------------------------------------------------------------------------------- ui -->
+
+	<script src=" https://cdnjs.cloudflare.com/ajax/libs/phaser-ce/2.16.1/phaser.min.js"></script>
+	<script type="text/javascript" src="./funciones.js"></script>
+	<script type="text/javascript" src="./inicio.js"></script>
+	<script type="text/javascript" src="./juego.js"></script>
+	<script type="text/javascript" src="./instrucciones.js"></script>
+	<script type="text/javascript" src="./historieta.js"></script>
+	<script type="text/javascript" src="./gano.js"></script>
+	<script type="text/javascript" src="./nivel.js"></script>
+	<script type="text/javascript" src="./nivel2.js"></script>
+	<script type="text/javascript" src="./nivel3.js"></script>
+	<script type="text/javascript" src="./main.js"></script>
+</body>
+
+</html>
