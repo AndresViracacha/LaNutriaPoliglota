@@ -1,4 +1,5 @@
 //musica
+var objetosRecogidos=0;
 var music;
 var skin;
 var turistas;
@@ -19,6 +20,14 @@ var mensajeGano =
 var formulario = document.getElementById("codigo");
 var tiempoTexto = document.getElementById("tiempo");
 var alerta = document.getElementById("alerta");
+var mensajeAlerta = document.getElementById("mensajeAlerta");
+var tituloAlerta = document.getElementById("tituloAlerta");
+
+var vidas1 = document.getElementById("vidas1");
+var vidas2 = document.getElementById("vidas2");
+var vidas3 = document.getElementById("vidas3");
+var vidas4 = document.getElementById("vidas4");
+var vidas5 = document.getElementById("vidas5");
 
 var botonIngresar;
 var textoAlerta;
@@ -31,6 +40,8 @@ var gorraOb;
 var mapaOb;
 var termoOb;
 var tiempo = 120;
+
+var vidasNutria=5;
 
 var juego = {
   preload: function () {
@@ -80,6 +91,11 @@ var juego = {
     game.load.image("turistas", "Sprites/juegop/turistas.png");
     //huron
     game.load.spritesheet("huron", "Sprites/juegop/huron.png", 40, 60);
+    //Obstaculos
+    game.load.image("vasija", "Sprites/juegop/vasija.png");
+    game.load.image("gaseosa", "Sprites/juegop/gaseosa.png");
+    game.load.image("limpiaPiso", "Sprites/juegop/limpiaPiso.png");
+
   },
   create: function () {
     var contenedorVidas = document.getElementById("vidas");
@@ -141,14 +157,29 @@ var juego = {
     game.physics.enable(termoOb, Phaser.Physics.ARCADE);
     termoOb.body.setSize(52, 62, 0, 0);
 
+    //ObstaculosConDaño
+    bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+    
+    var gaseosaA = bullets.create(200, 500, 'gaseosa');
+    var gaseosaB = bullets.create(0, 1000, 'limpiaPiso');
+    var gaseosaB = bullets.create(1600, 1000, 'vasija');
+    var gaseosaB = bullets.create(1600, 1400, 'limpiaPiso');
+    var gaseosaB = bullets.create(2000, 1900, 'gaseosa');
+    var gaseosaB = bullets.create(2500, 1900, 'vasija');
+    
+
     //Turistas--------------------------------------------------------------------------------------------
     turistas = game.add.sprite(2700, 1850, "turistas");
     game.physics.enable(turistas, Phaser.Physics.ARCADE);
     turistas.body.setSize(52, 62, 0, 0);
 
     /*huron ---------------------------------------------------------------------------------------- */
-    huron = game.add.sprite(2800, 1850, "huron");
+    huron = game.add.sprite(2850, 1925, "huron");
     game.physics.enable(huron, Phaser.Physics.ARCADE);
+    huron.animations.add("corre",[0,1,2,3,4,5,6],15,true
+    );
 
     ////////Nutria-----------------------------------------------------------------------------------------
     nutriaPlayer = game.add.sprite(32, 92, "nutria");
@@ -177,6 +208,8 @@ var juego = {
       10,
       true
     );
+
+    //
     ////////Fin Nutria-----------------------------------------------------------------------------------------
 
     //pantalla juego
@@ -197,6 +230,7 @@ var juego = {
     }
   },
   update: function () {
+
     if (tiempo == 0) {
       papel.visible = true;
       play.visible = true;
@@ -210,12 +244,15 @@ var juego = {
       alerta.style.display = "flex";
     }
     function binocularesObOver() {
+      objetosRecogidos++;
       binocularesOb.visible = false;
       binocularesOb.kill();
       var binocularesID = document.getElementById("binoculares");
       binocularesID.style.opacity = 1;
     }
     function camaraObOver() {
+      objetosRecogidos++;
+      
       var camaraID = document.getElementById("camara");
       camaraID.style.opacity = 1;
 
@@ -223,23 +260,75 @@ var juego = {
       camaraOb.kill();
     }
     function gorraObOver() {
+      objetosRecogidos++;
+
       gorraOb.visible = false;
       gorraOb.kill();
       var gorraID = document.getElementById("gorra");
       gorraID.style.opacity = 1;
     }
     function mapaObOver() {
+      objetosRecogidos++;
+
       mapaOb.visible = false;
       mapaOb.kill();
       var mapaID = document.getElementById("mapa");
       mapaID.style.opacity = 1;
     }
     function termoObOver() {
+      objetosRecogidos++;
+
       termoOb.visible = false;
       termoOb.kill();
       var termoID = document.getElementById("termo");
       termoID.style.opacity = 1;
     }
+    function ganoJuego() {
+    huron.animations.play("corre");
+    huron.body.velocity.x = 350;
+    setTimeout(() => {
+      papel.visible = true;
+          play.visible = true;
+          game.paused = true;
+          var contenedorVidas = document.getElementById("vidas");
+          contenedorVidas.style.display = "none";
+          var contenedorTiempo = document.getElementById("tiempoo");
+          contenedorTiempo.style.display = "none";
+          var contenedorObjetos = document.getElementById("objetos");
+          contenedorObjetos.style.display = "none";
+          alerta.style.display = "flex";
+    }, 2000);
+      
+    }
+    function dañoJugador(nutriaPlayer,bullets) {
+      bullets.kill();
+      vidasNutria--;
+      if(vidasNutria==4){
+        vidas5.style.display="none"
+      }
+      if(vidasNutria==3){
+        vidas4.style.display="none"
+      }
+      if(vidasNutria==2){
+        vidas3.style.display="none"
+      }
+      if(vidasNutria==1){
+        vidas2.style.display="none"
+      }
+      if(vidasNutria==0){
+        papel.visible = true;
+        play.visible = true;
+        game.paused = true;
+        var contenedorVidas = document.getElementById("vidas");
+        contenedorVidas.style.display = "none";
+        var contenedorTiempo = document.getElementById("tiempoo");
+        contenedorTiempo.style.display = "none";
+        var contenedorObjetos = document.getElementById("objetos");
+        contenedorObjetos.style.display = "none";
+        alerta.style.display = "flex";
+      }
+    }
+
     game.physics.arcade.collide(nutriaPlayer, layer);
 
     game.physics.arcade.overlap(
@@ -259,6 +348,9 @@ var juego = {
     game.physics.arcade.overlap(nutriaPlayer, gorraOb, gorraObOver, null, this);
     game.physics.arcade.overlap(nutriaPlayer, mapaOb, mapaObOver, null, this);
     game.physics.arcade.overlap(nutriaPlayer, termoOb, termoObOver, null, this);
+    game.physics.arcade.overlap(nutriaPlayer, turistas, ganoJuego, null, this);
+    game.physics.arcade.overlap(bullets, nutriaPlayer, dañoJugador, null, this);
+
 
     game.camera.follow(nutriaPlayer);
 
@@ -296,6 +388,14 @@ var juego = {
       } else {
         nutriaPlayer.frame = 7 + CN;
       }
+    }
+
+    if(tiempo==0||vidasNutria==0){
+      mensajeAlerta.textContent=mensajePerdio;
+      tituloAlerta.textContent="Has Perdido";
+    }else{
+      mensajeAlerta.textContent=mensajeGano+". ¡Has conseguido "+objetosRecogidos+" objetos de los turistas! ¡Muy bien!";
+      tituloAlerta.textContent="Has Ganado";
     }
 
     //FIN UPDATE----------------------------------------------------------------------------------------------------------
