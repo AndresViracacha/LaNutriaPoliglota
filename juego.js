@@ -1,5 +1,7 @@
+//sonido
+
 //musica
-var objetosRecogidos=0;
+var objetosRecogidos = 0;
 var music;
 var skin;
 var turistas;
@@ -8,6 +10,7 @@ var huron;
 var bg;
 var title;
 var CN = 0;
+var facing = "right";
 //PLAY
 var play;
 
@@ -41,7 +44,7 @@ var mapaOb;
 var termoOb;
 var tiempo = 120;
 
-var vidasNutria=5;
+var vidasNutria = 5;
 
 var juego = {
   preload: function () {
@@ -96,6 +99,7 @@ var juego = {
     game.load.image("gaseosa", "Sprites/juegop/gaseosa.png");
     game.load.image("limpiaPiso", "Sprites/juegop/limpiaPiso.png");
 
+    //Audio
   },
   create: function () {
     var contenedorVidas = document.getElementById("vidas");
@@ -161,14 +165,13 @@ var juego = {
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
-    
-    var gaseosaA = bullets.create(200, 500, 'gaseosa');
-    var gaseosaB = bullets.create(0, 1000, 'limpiaPiso');
-    var gaseosaB = bullets.create(1600, 1000, 'vasija');
-    var gaseosaB = bullets.create(1600, 1400, 'limpiaPiso');
-    var gaseosaB = bullets.create(2000, 1900, 'gaseosa');
-    var gaseosaB = bullets.create(2500, 1900, 'vasija');
-    
+
+    var gaseosaA = bullets.create(200, 500, "gaseosa");
+    var gaseosaB = bullets.create(0, 1000, "limpiaPiso");
+    var gaseosaB = bullets.create(1600, 1000, "vasija");
+    var gaseosaB = bullets.create(1600, 1400, "limpiaPiso");
+    var gaseosaB = bullets.create(2000, 1900, "gaseosa");
+    var gaseosaB = bullets.create(2500, 1900, "vasija");
 
     //Turistas--------------------------------------------------------------------------------------------
     turistas = game.add.sprite(2700, 1850, "turistas");
@@ -178,8 +181,7 @@ var juego = {
     /*huron ---------------------------------------------------------------------------------------- */
     huron = game.add.sprite(2850, 1925, "huron");
     game.physics.enable(huron, Phaser.Physics.ARCADE);
-    huron.animations.add("corre",[0,1,2,3,4,5,6],15,true
-    );
+    huron.animations.add("corre", [0, 1, 2, 3, 4, 5, 6], 15, true);
 
     ////////Nutria-----------------------------------------------------------------------------------------
     nutriaPlayer = game.add.sprite(32, 92, "nutria");
@@ -230,8 +232,8 @@ var juego = {
     }
   },
   update: function () {
-
     if (tiempo == 0) {
+      aventura.stop();
       papel.visible = true;
       play.visible = true;
       game.paused = true;
@@ -242,6 +244,10 @@ var juego = {
       var contenedorObjetos = document.getElementById("objetos");
       contenedorObjetos.style.display = "none";
       alerta.style.display = "flex";
+      var perdio = new Howl({
+        src: ["./sonidos/MusicaPerdio.mp3"],
+      });
+      perdio.play();
     }
     function binocularesObOver() {
       objetosRecogidos++;
@@ -252,7 +258,7 @@ var juego = {
     }
     function camaraObOver() {
       objetosRecogidos++;
-      
+
       var camaraID = document.getElementById("camara");
       camaraID.style.opacity = 1;
 
@@ -284,38 +290,45 @@ var juego = {
       termoID.style.opacity = 1;
     }
     function ganoJuego() {
-    huron.animations.play("corre");
-    huron.body.velocity.x = 350;
-    setTimeout(() => {
-      papel.visible = true;
-          play.visible = true;
-          game.paused = true;
-          var contenedorVidas = document.getElementById("vidas");
-          contenedorVidas.style.display = "none";
-          var contenedorTiempo = document.getElementById("tiempoo");
-          contenedorTiempo.style.display = "none";
-          var contenedorObjetos = document.getElementById("objetos");
-          contenedorObjetos.style.display = "none";
-          alerta.style.display = "flex";
-    }, 2000);
-      
+      huron.animations.play("corre");
+      huron.body.velocity.x = 350;
+      setTimeout(() => {
+        var Gano = new Howl({
+          src: ["./sonidos/MusicaGano.mp3"],
+        });
+        Gano.play();
+        papel.visible = true;
+        play.visible = true;
+        game.paused = true;
+        var contenedorVidas = document.getElementById("vidas");
+        contenedorVidas.style.display = "none";
+        var contenedorTiempo = document.getElementById("tiempoo");
+        contenedorTiempo.style.display = "none";
+        var contenedorObjetos = document.getElementById("objetos");
+        contenedorObjetos.style.display = "none";
+        alerta.style.display = "flex";
+      }, 2000);
     }
-    function dañoJugador(nutriaPlayer,bullets) {
+    function dañoJugador(nutriaPlayer, bullets) {
       bullets.kill();
       vidasNutria--;
-      if(vidasNutria==4){
-        vidas5.style.display="none"
+      if (vidasNutria == 4) {
+        vidas5.style.display = "none";
       }
-      if(vidasNutria==3){
-        vidas4.style.display="none"
+      if (vidasNutria == 3) {
+        vidas4.style.display = "none";
       }
-      if(vidasNutria==2){
-        vidas3.style.display="none"
+      if (vidasNutria == 2) {
+        vidas3.style.display = "none";
       }
-      if(vidasNutria==1){
-        vidas2.style.display="none"
+      if (vidasNutria == 1) {
+        vidas2.style.display = "none";
       }
-      if(vidasNutria==0){
+      if (vidasNutria == 0) {
+        var perdio = new Howl({
+          src: ["./sonidos/MusicaPerdio.mp3"],
+        });
+        perdio.play();
         papel.visible = true;
         play.visible = true;
         game.paused = true;
@@ -350,7 +363,6 @@ var juego = {
     game.physics.arcade.overlap(nutriaPlayer, termoOb, termoObOver, null, this);
     game.physics.arcade.overlap(nutriaPlayer, turistas, ganoJuego, null, this);
     game.physics.arcade.overlap(bullets, nutriaPlayer, dañoJugador, null, this);
-
 
     game.camera.follow(nutriaPlayer);
 
@@ -390,12 +402,16 @@ var juego = {
       }
     }
 
-    if(tiempo==0||vidasNutria==0){
-      mensajeAlerta.textContent=mensajePerdio;
-      tituloAlerta.textContent="Has Perdido";
-    }else{
-      mensajeAlerta.textContent=mensajeGano+". ¡Has conseguido "+objetosRecogidos+" objetos de los turistas! ¡Muy bien!";
-      tituloAlerta.textContent="Has Ganado";
+    if (tiempo == 0 || vidasNutria == 0) {
+      mensajeAlerta.textContent = mensajePerdio;
+      tituloAlerta.textContent = "Has Perdido";
+    } else {
+      mensajeAlerta.textContent =
+        mensajeGano +
+        ". ¡Has conseguido " +
+        objetosRecogidos +
+        " objetos de los turistas! ¡Muy bien!";
+      tituloAlerta.textContent = "Has Ganado";
     }
 
     //FIN UPDATE----------------------------------------------------------------------------------------------------------
